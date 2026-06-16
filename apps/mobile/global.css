@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 248 249 252;
+    --surface: 255 255 255;
+    --surface-alt: 244 245 250;
+    --fg: 18 20 28;
+    --muted: 104 110 124;
+    --faint: 156 162 178;
+    --line: 228 230 238;
+    --primary: 99 78 240;
+    --primary-soft: 234 231 254;
+    --primary-tint: 138 116 255;
+    --deal: 224 60 80;
+    --success: 22 163 96;
+    --warning: 224 150 40;
+    --on-primary: 255 255 255;
+    --deal-soft: 250 226 229;
+    --success-soft: 220 241 231;
+    --warning-soft: 250 239 223;
+  }
+
+  /* NativeWind v4 requires `.dark:root` (not `.dark`) for dark variable overrides. */
+  .dark:root {
+    --bg: 10 11 16;
+    --surface: 22 24 33;
+    --surface-alt: 28 31 42;
+    --fg: 240 242 248;
+    --muted: 160 166 182;
+    --faint: 108 114 130;
+    --line: 38 41 54;
+    --primary: 140 122 255;
+    --primary-soft: 36 34 64;
+    --primary-tint: 168 150 255;
+    --deal: 255 110 130;
+    --success: 52 199 130;
+    --warning: 240 170 70;
+    --on-primary: 16 17 24;
+    --deal-soft: 57 37 48;
+    --success-soft: 27 50 48;
+    --warning-soft: 55 46 39;
+  }
+}

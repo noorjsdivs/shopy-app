@@ -1,0 +1,204 @@
+// Shopy — Prisma schema (PostgreSQL)
+// Mirrors _props/DATABASE-SCHEMA.md. Money is integer minor units (Int), never floats.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum WeightUnit {
+  LB
+  OZ
+  KG
+  G
+  EACH
+}
+
+enum OrderStatus {
+  RECEIVED
+  PROCESSING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum FulfillmentMode {
+  DELIVERY
+  PICKUP
+}
+
+enum ReplacementPreference {
+  BEST_MATCH
+  SPECIFIC
+  REFUND
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  name         String?
+  role         Role       @default(CUSTOMER)
+  addresses    Address[]
+  orders       Order[]
+  cartItems    CartItem[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Address {
+  id     String  @id @default(cuid())
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  label  String
+  line1  String
+  line2  String?
+  city   String
+  state  String
+  zip    String
+}
+
+model Category {
+  id     String  @id @default(cuid())
+  slug   String  @unique
+  name   String
+  icon   String
+  stores Store[]
+}
+
+model Store {
+  id               String       @id @default(cuid())
+  slug             String       @unique
+  name             String
+  logo             String // emoji / short mark
+  category         Category     @relation(fields: [categoryId], references: [id])
+  categoryId       String
+  etaMinutes       Int
+  deliveryFeeMinor Int          @default(0)
+  dealBadge        String?
+  pricesNote       String?
+  rating           Float        @default(0)
+  boughtRecently   Int          @default(0)
+  brandColor       String?
+  isActive         Boolean      @default(true)
+  departments      Department[]
+  products         Product[]
+  orders           Order[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model Department {
+  id       String    @id @default(cuid())
+  store    Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId  String
+  slug     String // unique per store
+  name     String
+  icon     String
+  sort     Int       @default(0)
+  products Product[]
+
+  @@unique([storeId, slug])
+}
+
+model Product {
+  id             String      @id @default(cuid())
+  store          Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId        String
+  department     Department  @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId   String
+  name           String
+  brand          String?
+  size           String?
+  description    String?
+  priceMinor     Int
+  compareAtMinor Int? // struck-through "was" price for deals
+  byWeight       Boolean     @default(false)
+  weightUnit     WeightUnit?
+  boughtRecently Int         @default(0)
+  image          String
+  blurhash       String?
+  tags           String[] // dietary / facets
+  nutrition      Json? // [{ label, value }]
+  isActive       Boolean     @default(true)
+  cartItems      CartItem[]
+  orderLines     OrderLine[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([storeId, departmentId])
+  @@index([name])
+}
+
+model CartItem {
+  id                   String                @id @default(cuid())
+  user                 User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
+  product              Product               @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId            String
+  qty                  Int                   @default(1)
+  replacement          ReplacementPreference @default(BEST_MATCH)
+  replacementProductId String?
+  createdAt            DateTime              @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id           String          @id @default(cuid())
+  user         User            @relation(fields: [userId], references: [id])
+  userId       String
+  store        Store           @relation(fields: [storeId], references: [id])
+  storeId      String
+  status       OrderStatus     @default(RECEIVED)
+  mode         FulfillmentMode @default(DELIVERY)
+  slotLabel    String?
+  addressLabel String?
+  // snapshot of computed economics at placement (server-computed, minor units)
+  subtotalMinor    Int
+  serviceFeeMinor  Int
+  deliveryFeeMinor Int
+  tipMinor         Int                @default(0)
+  totalMinor       Int
+  currency         String             @default("USD")
+  etaMinutes       Int                @default(0)
+  paymentAuthId    String? // from simulated payments.authorize
+  lines            OrderLine[]
+  events           OrderStatusEvent[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  @@index([userId])
+}
+
+model OrderLine {
+  id        String  @id @default(cuid())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  nameSnap  String // product name at purchase time
+  qty       Int
+  unitMinor Int // price per unit at purchase time
+  lineMinor Int // unitMinor * qty
+  byWeight  Boolean @default(false)
+}
+
+model OrderStatusEvent {
+  id        String      @id @default(cuid())
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  status    OrderStatus
+  note      String?
+  createdAt DateTime    @default(now())
+}
