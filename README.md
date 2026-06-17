@@ -232,6 +232,34 @@ Issues and pull requests are welcome. Please keep the project's conventions: Typ
 NativeWind `className` (no `StyleSheet.create` / raw hex), DTO-validated API inputs, and a clean
 `tsc` / lint run before opening a PR.
 
+## 🔗 Connect & follow
+
+Built by **Noor Mohammad** — follow along for more free full-stack projects, tutorials & source code:
+
+<div align="center">
+
+[![YouTube](https://img.shields.io/badge/YouTube-@reactjsBD-FF0000?logo=youtube&logoColor=white)](https://www.youtube.com/@reactjsBD)
+[![Medium](https://img.shields.io/badge/Medium-@reactjsbd-000000?logo=medium&logoColor=white)](https://medium.com/@reactjsbd)
+[![Website](https://img.shields.io/badge/Website-reactbd.com-0A66C2?logo=googlechrome&logoColor=white)](https://www.reactbd.com)
+[![GitHub](https://img.shields.io/badge/GitHub-noorjsdivs-181717?logo=github&logoColor=white)](https://github.com/noorjsdivs)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Noor%20Mohammad-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/noor-mohammad-ab2245193/)
+[![Instagram](https://img.shields.io/badge/Instagram-@simplenoor143-E4405F?logo=instagram&logoColor=white)](https://www.instagram.com/simplenoor143/)
+[![Facebook](https://img.shields.io/badge/Facebook-Noor-1877F2?logo=facebook&logoColor=white)](https://www.facebook.com/Noorlalu143/)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/reactbd)
+
+</div>
+
+| Platform | Link |
+|---|---|
+| ▶️ **YouTube** | [@reactjsBD](https://www.youtube.com/@reactjsBD) |
+| ✍️ **Medium** | [@reactjsbd](https://medium.com/@reactjsbd) |
+| 🌐 **Website** | [reactbd.com](https://www.reactbd.com) |
+| 💻 **GitHub** | [noorjsdivs](https://github.com/noorjsdivs) |
+| 💼 **LinkedIn** | [Noor Mohammad](https://www.linkedin.com/in/noor-mohammad-ab2245193/) |
+| 📸 **Instagram** | [@simplenoor143](https://www.instagram.com/simplenoor143/) |
+| 👍 **Facebook** | [Noor](https://www.facebook.com/Noorlalu143/) |
+| ☕ **Buy Me a Coffee** | [reactbd](https://buymeacoffee.com/reactbd) |
+
 ## 📄 License
 
 Released under the **MIT License**. _(Add a `LICENSE` file before publishing if one isn't present.)_
